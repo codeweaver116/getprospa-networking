@@ -4,7 +4,6 @@ variable "cidr" {
 }
 
 variable "vpc_name" {
-    type = "string"
     default = "main"
   
 }
@@ -37,13 +36,11 @@ variable "stack" {
 
 variable "region" {
     default = "us-east-1"
-    type = "string"
   
 }
 
 variable "organization_name" {
     default = "getprospa"
-    type = "string"
   
 }
 

@@ -1,5 +1,15 @@
+terraform {
+    required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0.0"
+    }
+  }
+  cloud {
+    organization = "Oaklabs"
 
-provider "aws" {
-  region     = var.region
-  version    = "~> 2.0"
+    workspaces {
+      name = "getprospa-networking-qa"
+    }
+  }
 }
