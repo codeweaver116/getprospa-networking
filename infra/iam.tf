@@ -1,6 +1,6 @@
 
 resource "aws_iam_role" "vpc-flow-logs-role" {
-  name = "${var.name}-vpc-flow-logs-role"
+  name = "${var.stack["networking"]}-vpc-flow-logs-role"
 
   assume_role_policy = <<EOF
 {
@@ -20,7 +20,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
-  name = "${var.name}-vpc-flow-logs-policy"
+  name = "${var.stack["networking"]}-vpc-flow-logs-policy"
   role = aws_iam_role.vpc-flow-logs-role.id
 
   policy = <<EOF
