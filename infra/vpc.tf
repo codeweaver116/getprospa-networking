@@ -1,11 +1,12 @@
 resource "aws_vpc" "main" {
+  name = var.vpc_name
   cidr_block           = var.cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name        = "${var.name}-vpc-${var.environment}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-vpc-${var.environment["qa"]}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -13,8 +14,8 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.name}-igw-${var.environment}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-igw-${var.environment}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -25,8 +26,8 @@ resource "aws_nat_gateway" "main" {
   depends_on    = [aws_internet_gateway.main]
 
   tags = {
-    Name        = "${var.name}-nat-${var.environment}-${format("%03d", count.index+1)}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-nat-${var.environment}-${format("%03d", count.index+1)}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -35,8 +36,8 @@ resource "aws_eip" "nat" {
   vpc = true
 
   tags = {
-    Name        = "${var.name}-eip-${var.environment}-${format("%03d", count.index+1)}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-eip-${var.environment}-${format("%03d", count.index+1)}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -47,8 +48,8 @@ resource "aws_subnet" "private" {
   count             = length(var.private_subnets)
 
   tags = {
-    Name        = "${var.name}-private-subnet-${var.environment}-${format("%03d", count.index+1)}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-private-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -60,8 +61,8 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.name}-public-subnet-${var.environment}-${format("%03d", count.index+1)}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-public-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -69,8 +70,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.name}-routing-table-public"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-routing-table-public"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -85,8 +86,8 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.name}-routing-table-private-${format("%03d", count.index+1)}"
-    Environment = var.environment
+    Name        = "${var.stack["networking"]}-routing-table-private-${format("%03d", count.index+1)}"
+    Environment =var.environment["qa"]
   }
 }
 
@@ -117,5 +118,5 @@ resource "aws_flow_log" "main" {
 }
 
 resource "aws_cloudwatch_log_group" "main" {
-  name = "${var.name}-cloudwatch-log-group"
+  name = "${var.stack["networking"]}-cloudwatch-log-group"
 }
