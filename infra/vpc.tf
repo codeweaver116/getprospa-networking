@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.stack["networking"]}-igw-${var.environment}"
+    Name        = "${var.stack["networking"]}-igw-${var.environment["qa"]}"
     Environment =var.environment["qa"]
   }
 }
@@ -25,7 +25,7 @@ resource "aws_nat_gateway" "main" {
   depends_on    = [aws_internet_gateway.main]
 
   tags = {
-    Name        = "${var.stack["networking"]}-nat-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.stack["networking"]}-nat-${var.environment["qa"]}-${format("%03d", count.index+1)}"
     Environment =var.environment["qa"]
   }
 }
@@ -35,7 +35,7 @@ resource "aws_eip" "nat" {
   vpc = true
 
   tags = {
-    Name        = "${var.stack["networking"]}-eip-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.stack["networking"]}-eip-${var.environment["qa"]}-${format("%03d", count.index+1)}"
     Environment =var.environment["qa"]
   }
 }
@@ -47,7 +47,7 @@ resource "aws_subnet" "private" {
   count             = length(var.private_subnets)
 
   tags = {
-    Name        = "${var.stack["networking"]}-private-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.stack["networking"]}-private-subnet-${var.environment["qa"]}-${format("%03d", count.index+1)}"
     Environment =var.environment["qa"]
   }
 }
@@ -60,7 +60,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.stack["networking"]}-public-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.stack["networking"]}-public-subnet-${var.environment["qa"]}-${format("%03d", count.index+1)}"
     Environment =var.environment["qa"]
   }
 }
